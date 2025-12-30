@@ -1,0 +1,33 @@
+from PIL import Image, ImageDraw, ImageFont
+
+# 配置
+width, height = 400, 500  # 图片大小
+bg_color = (255, 255, 255)  # 背景色
+text_color = (0, 0, 0)      # 文字颜色
+font_path = "msyh.ttc"      # 字体文件路径（Windows默认有微软雅黑）
+font_size = 100             # 字母大小
+
+# 拼音字母列表
+pinyin_list = ['a', 'o', 'e', 'i', 'u', 'ü', 'b', 'p', 'm', 'f', 'd', 't', 'n', 'l']
+
+# 循环生成每个字母的图片
+for py in pinyin_list:
+    # 创建空白图片
+    img = Image.new("RGB", (width, height), bg_color)
+    draw = ImageDraw.Draw(img)
+
+    # 设置字体
+    font = ImageFont.truetype(font_path, font_size)
+
+    # 计算文字居中位置
+    text_width, text_height = draw.textsize(py, font=font)
+    x = (width - text_width) // 2
+    y = (height - text_height) // 2
+
+    # 绘制文字
+    draw.text((x, y), py, font=font, fill=text_color)
+
+    # 保存图片
+    filename = f"pinyin_{py}.png"
+    img.save(filename)
+    print(f"已生成: {filename}")
